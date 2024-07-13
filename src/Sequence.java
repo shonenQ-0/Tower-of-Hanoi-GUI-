@@ -8,5 +8,4 @@ public class Sequence {
     }
 
     public ArrayList<BlockInfo> getNowData() { 	return current;  }
-
 }

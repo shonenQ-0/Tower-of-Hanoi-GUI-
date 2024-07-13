@@ -40,10 +40,8 @@ public class BlockInfo {
         height = 40;
         width = info.getWidth();
         blockColor = info.getColor();
-
         this.setData();
     }
-
 
     public void changeData(char change, int tower) {
         location = change;
@@ -51,7 +49,6 @@ public class BlockInfo {
     }
 
     public void setData(){
-        point = getPoint();
         int tp; // A, B, C 타워의 각각 지점
 
         if(location == 'A') {
@@ -61,6 +58,8 @@ public class BlockInfo {
         } else {
             tp = 620;
         }
+
+        point = new Point();
 
         standardX = 90 / total;
 

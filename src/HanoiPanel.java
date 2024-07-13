@@ -6,14 +6,16 @@ import java.util.ArrayList;
 
 public class HanoiPanel extends JPanel {
     private JTextField input;
-    private JButton start, prev, next;
+    private JButton start, prev, next, reset;
     private DrawerPanel drawer;
     private int inputValue, nSequence;
     private Logic logic;
     private Listener listener;
     private ArrayList<Sequence> sequence;
+    private HanoiFrame frame;
 
-    public HanoiPanel(){
+    public HanoiPanel(HanoiFrame hanoiFrame){
+        frame = hanoiFrame;
         Dimension d = new Dimension(800,800);
         setSize(d);
         setBackground(Color.black);
@@ -22,7 +24,7 @@ public class HanoiPanel extends JPanel {
         listener = new Listener();
         nSequence = 1;
 
-        JLabel title = new JLabel("Tower of Hanoi");
+        JLabel title = new JLabel("하노이 탑");
         title.setForeground(Color.white);
         title.setFont(new Font("Helvetica", Font.ITALIC, 40));
         title.setHorizontalAlignment(SwingConstants.CENTER);
@@ -41,33 +43,37 @@ public class HanoiPanel extends JPanel {
         Font fnt = new Font("Helvetica", Font.ITALIC, 20);
 
         JLabel top = new JLabel("탑 입력");
-        top.setBounds(50,25,100,50);
+        top.setBounds(25,25,100,50);
         top.setForeground(Color.white);
         top.setHorizontalAlignment(SwingConstants.CENTER);
         top.setFont(fnt);
         bottom.add(top);
 
         input = new JTextField();
-        input.setBounds(150,25,100,50);
+        input.setBounds(130,25,80,50);
         input.setFont(fnt);
         input.addActionListener(listener);
         bottom.add(input);
 
         start = new JButton("시작");
-        start.setBounds(250,25,100,50);
+        start.setBounds(240,25,100,50);
         start.addActionListener(listener);
         bottom.add(start);
 
         next = new JButton("다음");
-        next.setBounds(500,25,100,50);
+        next.setBounds(450,25,100,50);
         next.addActionListener(listener);
         bottom.add(next);
 
         prev = new JButton("이전");
-        prev.setBounds(650,25,100,50);
+        prev.setBounds(360,25,100,50);
         prev.addActionListener(listener);
         bottom.add(prev);
 
+        reset = new JButton("리셋");
+        reset.setBounds(650, 25, 80, 50);
+        reset.addActionListener(listener);
+        bottom.add(reset);
 
     }
     public class Listener implements ActionListener{
@@ -91,6 +97,8 @@ public class HanoiPanel extends JPanel {
                 nSequence++;
             }else if (source == prev) {
                 nSequence--;
+            } else if (source == reset) {
+                frame.recall();
             }
 
             sequence = logic.getSequence();

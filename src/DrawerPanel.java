@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class DrawerPanel extends JPanel {
     private Graphics page;
     private Dimension dsize;
-    private ArrayList<BlockInfo> tmp;
+    private ArrayList<BlockInfo> now;
 
     DrawerPanel(Dimension d){
         setBackground(Color.white);
@@ -13,7 +13,7 @@ public class DrawerPanel extends JPanel {
         setLayout(null);
         dsize = new Dimension(d.width, d.height*3/4);
 
-        tmp = new ArrayList<>();
+        now = new ArrayList<>();
 
         Font fnt = new Font("Helvetica", Font.ITALIC, 20);
 
@@ -43,16 +43,16 @@ public class DrawerPanel extends JPanel {
     }
 
     public void DrawTower() {
-        for (int i = 0; i < tmp.size(); i++) {
-            BlockInfo info = tmp.get(i);
+        for (int i = 0; i < now.size(); i++) {
+            BlockInfo info = now.get(i);
             page.setColor(info.getColor());
             page.fillRect(info.getPoint().x, info.getPoint().y, info.getWidth(), info.getHeight());
         }
     }
     public void DrawPillar(){
-        page.fillRect(120,dsize.height/4,40,dsize.height*3/4-50);
-        page.fillRect(360,dsize.height/4,40,dsize.height*3/4-50);
-        page.fillRect(600,dsize.height/4,40,dsize.height*3/4-50);
+        page.fillRect(130,dsize.height/4,25,dsize.height*3/4-50);
+        page.fillRect(370,dsize.height/4,25,dsize.height*3/4-50);
+        page.fillRect(610,dsize.height/4,25,dsize.height*3/4-50);
     }
     public void paintComponent(Graphics g){
         super.paintComponent(g);
@@ -60,13 +60,21 @@ public class DrawerPanel extends JPanel {
         page = g;
         DrawPillar();
         DrawTower();
+
     }
 
     public void setDataList(ArrayList<BlockInfo> current, int n){
+        now.clear(); // 이거없으면 잔상 남음
         for (int i = 0; i < current.size(); i++) {
             BlockInfo info = current.get(i);
-            tmp.add(new BlockInfo(info, n));
+            now.add(new BlockInfo(info, n));
         }
+    }
+
+    public void dataDelete(){
+        now = new ArrayList<>();
+        DrawTower();
+        DrawPillar();
     }
 
 }

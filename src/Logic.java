@@ -91,6 +91,11 @@ public class Logic {
         sequence.add(new Sequence(tmpList));
     }
 
+    public void initdata(){
+        sequence.clear();
+        nowList.clear();
+    }
+
     public ArrayList<Sequence>	getSequence() {
         return sequence;
     }
