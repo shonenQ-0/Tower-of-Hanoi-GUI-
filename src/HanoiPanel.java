@@ -2,15 +2,25 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class HanoiPanel extends JPanel {
+    private JTextField input;
+    private JButton start, prev, next;
+    private DrawerPanel drawer;
+    private int inputValue, nSequence;
+    private Logic logic;
+    private Listener listener;
+    private ArrayList<Sequence> sequence;
+
     public HanoiPanel(){
         Dimension d = new Dimension(800,800);
         setSize(d);
         setBackground(Color.black);
         setLayout(null);
 
-        Listener listener = new Listener();
+        listener = new Listener();
+        nSequence = 1;
 
         JLabel title = new JLabel("Tower of Hanoi");
         title.setForeground(Color.white);
@@ -19,7 +29,7 @@ public class HanoiPanel extends JPanel {
         title.setBounds(0,0,d.width,d.height/8);
         this.add(title);
 
-        Drawer drawer = new Drawer(d);
+        drawer = new DrawerPanel(d);
         this.add(drawer);
 
         JPanel bottom = new JPanel();
@@ -37,23 +47,23 @@ public class HanoiPanel extends JPanel {
         top.setFont(fnt);
         bottom.add(top);
 
-        JTextField input = new JTextField();
+        input = new JTextField();
         input.setBounds(150,25,100,50);
         input.setFont(fnt);
         input.addActionListener(listener);
         bottom.add(input);
 
-        JButton start = new JButton("시작");
+        start = new JButton("시작");
         start.setBounds(250,25,100,50);
         start.addActionListener(listener);
         bottom.add(start);
 
-        JButton next = new JButton("다음");
+        next = new JButton("다음");
         next.setBounds(500,25,100,50);
         next.addActionListener(listener);
         bottom.add(next);
 
-        JButton prev = new JButton("이전");
+        prev = new JButton("이전");
         prev.setBounds(650,25,100,50);
         prev.addActionListener(listener);
         bottom.add(prev);
@@ -63,7 +73,29 @@ public class HanoiPanel extends JPanel {
     public class Listener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
+            Object source = e.getSource();
+            if ((source == input) || (source == start)){
+                try {
+                    inputValue = Integer.parseInt(input.getText());
+                }catch (NumberFormatException ex){
+                    JOptionPane.showMessageDialog(null, "숫자를 입력해주세요.", "입력 오류", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
 
+                if (inputValue <= 0){
+                    JOptionPane.showMessageDialog(null, "양수를 입력해주세요.", "입력 오류", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                    logic = new Logic(inputValue);
+            }else if (source == next) {
+                nSequence++;
+            }else if (source == prev) {
+                nSequence--;
+            }
+
+            sequence = logic.getSequence();
+            drawer.setDataList(sequence.get(nSequence-1).getNowData(), nSequence - 1);
+            drawer.repaint();
         }
     }
 }

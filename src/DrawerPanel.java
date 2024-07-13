@@ -1,12 +1,19 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
-public class Drawer extends JPanel {
-    Drawer(Dimension d){
+public class DrawerPanel extends JPanel {
+    private Graphics page;
+    private Dimension dsize;
+    private ArrayList<BlockInfo> tmp;
+
+    DrawerPanel(Dimension d){
         setBackground(Color.white);
         setBounds(0,d.height / 8, d.width, d.height*3/4);
         setLayout(null);
         dsize = new Dimension(d.width, d.height*3/4);
+
+        tmp = new ArrayList<>();
 
         Font fnt = new Font("Helvetica", Font.ITALIC, 20);
 
@@ -33,11 +40,16 @@ public class Drawer extends JPanel {
         C.setFont(fnt);
         C.setForeground(Color.white);
         bottom.add(C);
-
-
-
     }
-    public void pillar(){
+
+    public void DrawTower() {
+        for (int i = 0; i < tmp.size(); i++) {
+            BlockInfo info = tmp.get(i);
+            page.setColor(info.getColor());
+            page.fillRect(info.getPoint().x, info.getPoint().y, info.getWidth(), info.getHeight());
+        }
+    }
+    public void DrawPillar(){
         page.fillRect(120,dsize.height/4,40,dsize.height*3/4-50);
         page.fillRect(360,dsize.height/4,40,dsize.height*3/4-50);
         page.fillRect(600,dsize.height/4,40,dsize.height*3/4-50);
@@ -46,9 +58,15 @@ public class Drawer extends JPanel {
         super.paintComponent(g);
 
         page = g;
-        pillar();
-
+        DrawPillar();
+        DrawTower();
     }
-    private Graphics page;
-    private Dimension dsize;
+
+    public void setDataList(ArrayList<BlockInfo> current, int n){
+        for (int i = 0; i < current.size(); i++) {
+            BlockInfo info = current.get(i);
+            tmp.add(new BlockInfo(info, n));
+        }
+    }
+
 }
